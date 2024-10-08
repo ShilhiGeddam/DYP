@@ -1,2 +1,1 @@
 # DYP
-git pull
