@@ -1,0 +1,39 @@
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Contact Us
+    link(rel="stylesheet" href="contact.css")
+  body
+    include navbar
+    h1 Contact Us
+
+    .contact-form-container
+      form(action="/submit-contact-form" method="POST")
+        .form-row
+          .form-group
+            label(for="firstName") First Name:
+            input#firstName(type="text" name="firstName" required placeholder="Enter your first name")
+          
+          .form-group
+            label(for="lastName") Last Name:
+            input#lastName(type="text" name="lastName" required placeholder="Enter your last name")
+
+        .form-row
+          .form-group
+            label(for="phoneNumber") Phone Number:
+            input#phoneNumber(type="tel" name="phoneNumber" required placeholder="Enter your phone number")
+
+          .form-group
+            label(for="email") Email:
+            input#email(type="email" name="email" required placeholder="Enter your email")
+
+        .form-row
+          .form-group.full-width
+            label(for="message") Message:
+            textarea#message(name="message" required placeholder="Enter your message here...")
+
+        .form-group
+          button(type="submit") Submit
+
