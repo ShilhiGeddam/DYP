@@ -33,6 +33,9 @@ app.get("/", function(req, res) {
 });
 
 
+app.get("/contact", function(req, res) {
+    res.render("contact");
+});
 
 // Create a route for /goodbye
 // Responds to a 'GET' request
