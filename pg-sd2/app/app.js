@@ -13,19 +13,26 @@ const db = require('./services/db');
 app.set('view engine', 'pug');
 app.set('views', './app/views');
 // Create a route for root - /
-app.get("/", function(req, res) {
-    res.render("navbar");
-});
+// app.get("/", function(req, res) {
+//     res.render("navbar");
+// });
 
 // Create a route for testing the db
-app.get("/db_test", function(req, res) {
+app.get("/", function(req, res) {
+    const brands = [
+        "Toyota", "Honda", "Ford", "BMW", "Mercedes-Benz", "Audi",
+        "Chevrolet", "Nissan", "Hyundai", "Volkswagen", "Tesla",
+        "Porsche", "Mazda", "Kia", "Subaru","Jaguar"
+      ];
     // Assumes a table called test_table exists in your database
-    sql = 'select * from test_table';
+    sql = 'select * from car_details';
     db.query(sql).then(results => {
-        console.log(results);
-        res.send(results)
+        // console.log(results);
+        res.render('cars', { cars: results,brands });
     });
 });
+
+
 
 // Create a route for /goodbye
 // Responds to a 'GET' request

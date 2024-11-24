@@ -1,0 +1,64 @@
+doctype html
+html
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        title Cars List
+        link(rel="stylesheet" href="cars.css")
+    body
+        include navbar
+
+        // Search and Brand Filter Section
+        .search-container
+            input#searchBar(type="text" placeholder="Search cars by name or year...")
+            select#brandFilter
+                option(value="") Select Brand
+                each brand in brands
+                    option(value=brand) #{brand}
+
+        h1 Featured Cars
+        .car-container
+            each car in cars
+                .car-card(data-brand=car.manufacturer)
+                    a(href=`/cars/${car.car_id}`)
+                        img(src=`./images/${car.image_location}` alt="Car Image")
+                        h2 #{car.model_name}
+                        p #{car.year}
+
+        script.
+            document.addEventListener("DOMContentLoaded", () => {
+                const searchBar = document.getElementById("searchBar");
+                const brandFilter = document.getElementById("brandFilter");
+                const carCards = document.querySelectorAll(".car-card");
+
+                // Filter by search query (car name or year)
+                searchBar.addEventListener("input", (event) => {
+                    const searchQuery = event.target.value.toLowerCase();
+
+                    carCards.forEach((card) => {
+                        const carName = card.querySelector("h2").textContent.toLowerCase();
+                        const carYear = card.querySelector("p").textContent.toLowerCase();
+
+                        if (carName.includes(searchQuery) || carYear.includes(searchQuery)) {
+                            card.style.display = "block";
+                        } else {
+                            card.style.display = "none";
+                        }
+                    });
+                });
+
+                // Filter by selected brand
+                brandFilter.addEventListener("change", (event) => {
+                    const selectedBrand = event.target.value.toLowerCase();
+
+                    carCards.forEach((card) => {
+                        const cardBrand = card.getAttribute("data-brand").toLowerCase();
+
+                        if (selectedBrand === "" || cardBrand.includes(selectedBrand)) {
+                            card.style.display = "block";
+                        } else {
+                            card.style.display = "none";
+                        }
+                    });
+                });
+            });
