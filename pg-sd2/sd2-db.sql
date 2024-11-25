@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Oct 30, 2022 at 09:54 AM
--- Server version: 8.0.24
--- PHP Version: 7.4.20
+-- Generation Time: Nov 24, 2024 at 11:10 PM
+-- Server version: 8.2.0
+-- PHP Version: 8.2.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,41 +24,56 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `test_table`
+-- Table structure for table `car_details`
 --
 
-CREATE TABLE `test_table` (
-  `id` int NOT NULL,
-  `name` varchar(512) NOT NULL
+CREATE TABLE `car_details` (
+  `car_id` int NOT NULL,
+  `model_name` varchar(100) NOT NULL,
+  `year` varchar(50) DEFAULT NULL,
+  `manufacturer` varchar(150) NOT NULL,
+  `assembly_location` varchar(150) DEFAULT NULL,
+  `class` varchar(50) DEFAULT NULL,
+  `layout` varchar(100) DEFAULT NULL,
+  `platform` varchar(100) DEFAULT NULL,
+  `related_models` text,
+  `transmission` varchar(100) DEFAULT NULL,
+  `description` text,
+  `image_location` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `test_table`
+-- Dumping data for table `car_details`
 --
 
-INSERT INTO `test_table` (`id`, `name`) VALUES
-(1, 'Lisa'),
-(2, 'Kimia');
+INSERT INTO `car_details` (`car_id`, `model_name`, `year`, `manufacturer`, `assembly_location`, `class`, `layout`, `platform`, `related_models`, `transmission`, `description`, `image_location`) VALUES
+(1, 'Audi RS 6 quattro', '2002–2004, 2008–2010, 2013–present', 'Audi Sport GmbH for Audi AG', 'Germany, Neckarsulm', 'Executive car (E)', 'Front-engine, all-wheel-drive (quattro)', 'MLBevo series', 'Audi A6, Audi S6', 'Tiptronic automatic', 'High-performance luxury car.', 'audi_rs6.jpg'),
+(2, 'Audi TT', '1998–2023', 'Audi AG', 'Hungary: Győr (engines and final assembly)', 'Sports car (S)', 'Front-engine, front-wheel-drive / Front-engine, all-wheel-drive (quattro)', 'Volkswagen Group A, Volkswagen Group MQB', 'N/A', '6-speed manual, 7-speed dual-clutch (M-DCT)', 'Sporty and dynamic with two body styles: coupé and roadster.', 'audi_tt.jpg'),
+(3, 'Audi A3', '1996–present', 'Audi AG', 'Germany', 'Subcompact executive car', 'Front-engine, front-wheel-drive / all-wheel-drive (quattro)', 'N/A', 'Audi A3 Saloon, Audi S3', 'N/A', 'Compact luxury car with various body styles.', 'audi_a3.jpg'),
+(4, 'Honda Accord', '1976–present', 'Honda', 'Various', 'Compact/Mid-size car', 'Front-engine, front-wheel-drive', 'N/A', 'Honda Civic, Honda CR-V', 'CVT, 6-speed manual, 7-speed dual-clutch', 'Popular sedan offering a blend of style and practicality.', 'honda_accord.webp'),
+(5, 'Kia Sorento', '2002–present', 'Kia', 'Various', 'Compact SUV / Mid-size crossover SUV', 'Front-engine, rear-wheel-drive / front-engine, front-wheel-drive / front-engine, all-wheel-drive', 'N/A', 'Hyundai Santa Fe, Kia Sportage', '8-speed automatic', 'Spacious and versatile SUV.', 'kia_sorento.png'),
+(6, 'Jaguar F-Type', '2013–2024', 'Jaguar Land Rover', 'United Kingdom', 'Grand Tourer (S)', 'Front-engine, rear-wheel-drive / all-wheel-drive', 'JLR D6a', 'Jaguar XK, Jaguar XKR', '8-speed automatic', 'Sleek, high-performance sports car.', 'jaguar_f-type.webp'),
+(7, 'Jaguar XK', '1996–2014', 'Jaguar Cars', 'United Kingdom', 'Grand Tourer (S)', 'Front-engine, rear-wheel-drive', 'Jaguar XJS, Jaguar XJ', 'Jaguar XKR', '6-speed automatic', 'Luxury and performance in a coupé or convertible.', 'jaguar_xk.jpg');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `test_table`
+-- Indexes for table `car_details`
 --
-ALTER TABLE `test_table`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `car_details`
+  ADD PRIMARY KEY (`car_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `test_table`
+-- AUTO_INCREMENT for table `car_details`
 --
-ALTER TABLE `test_table`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `car_details`
+  MODIFY `car_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
