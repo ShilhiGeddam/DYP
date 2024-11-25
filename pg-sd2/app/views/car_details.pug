@@ -1,0 +1,53 @@
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title #{car.model_name} Details
+    link(rel="stylesheet" href="../car_details.css")
+  body
+    include navbar1
+    .container
+      h1= car.model_name
+
+      .car-image
+        img(src=`../images/${car.image_location}` alt="Car Image")
+
+      // Overview Section
+      .overview
+        h2 Overview
+        table
+          tr
+            th Manufacturer
+            td= car.manufacturer
+          tr
+            th Production
+            td= car.year
+          tr
+            th Assembly
+            td= car.assembly_location
+
+      // Body and Chassis Section
+      .body-chassis
+        h2 Body and Chassis
+        table
+          tr
+            th Class
+            td= car.class
+          tr
+            th Layout
+            td= car.layout
+          tr
+            th Platform
+            td= car.platform
+          tr
+            th Related Models
+            td= car.related_models
+
+      // Powertrain Section
+      .powertrain
+        h2 Powertrain
+        table
+          tr
+            th Transmission
+            td= car.transmission

@@ -32,6 +32,21 @@ app.get("/", function(req, res) {
     });
 });
 
+// Route to display the details of a specific car
+app.get("/cars/:carId", function(req, res) {
+    const { carId } = req.params;
+    const sql = 'SELECT * FROM car_details WHERE car_id = ?';
+    console.log(sql);
+    db.query(sql, [carId])
+        .then(results => {
+            console.log(results.length);
+            if (results.length > 0) {
+                res.render('car_details', { car: results[0] });
+            } else {
+                res.status(404).send('Car not found');
+            }
+        })
+});
 
 app.get("/contact", function(req, res) {
     res.render("contact");
