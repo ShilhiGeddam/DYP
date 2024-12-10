@@ -16,7 +16,12 @@ app.set('views', './app/views');
 // app.get("/", function(req, res) {
 //     res.render("navbar");
 // });
-
+app.get("/login", function(req, res) {
+    res.render("login");
+});
+app.get("/register", function(req, res) {
+    res.render("register");
+});
 // Create a route for testing the db
 app.get("/", function(req, res) {
     const brands = [
