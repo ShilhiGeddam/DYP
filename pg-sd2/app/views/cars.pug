@@ -24,6 +24,11 @@ html
                         img(src=`./images/${car.image_location}` alt="Car Image")
                         h2 #{car.model_name}
                         p #{car.year}
+                        // Rating Stars
+                        .rating
+                            each star in [1, 2, 3, 4, 5]
+                                span.star(class=car.rating >= star ? 'filled' : '') ★
+                        p Rating: #{car.rating} / 5
 
         script.
             document.addEventListener("DOMContentLoaded", () => {
@@ -31,34 +36,30 @@ html
                 const brandFilter = document.getElementById("brandFilter");
                 const carCards = document.querySelectorAll(".car-card");
 
-                // Filter by search query (car name or year)
-                searchBar.addEventListener("input", (event) => {
-                    const searchQuery = event.target.value.toLowerCase();
-
+                const filterCars = (searchQuery, selectedBrand) => {
                     carCards.forEach((card) => {
                         const carName = card.querySelector("h2").textContent.toLowerCase();
                         const carYear = card.querySelector("p").textContent.toLowerCase();
+                        const cardBrand = card.getAttribute("data-brand").toLowerCase();
 
-                        if (carName.includes(searchQuery) || carYear.includes(searchQuery)) {
-                            card.style.display = "block";
-                        } else {
-                            card.style.display = "none";
-                        }
+                        const isSearchMatch = searchQuery === "" || carName.includes(searchQuery) || carYear.includes(searchQuery);
+                        const isBrandMatch = selectedBrand === "" || cardBrand.includes(selectedBrand);
+
+                        card.style.display = isSearchMatch && isBrandMatch ? "block" : "none";
                     });
+                };
+
+                // Filter by search query (car name or year)
+                searchBar.addEventListener("input", (event) => {
+                    const searchQuery = event.target.value.toLowerCase();
+                    const selectedBrand = brandFilter.value.toLowerCase();
+                    filterCars(searchQuery, selectedBrand);
                 });
 
                 // Filter by selected brand
                 brandFilter.addEventListener("change", (event) => {
+                    const searchQuery = searchBar.value.toLowerCase();
                     const selectedBrand = event.target.value.toLowerCase();
-
-                    carCards.forEach((card) => {
-                        const cardBrand = card.getAttribute("data-brand").toLowerCase();
-
-                        if (selectedBrand === "" || cardBrand.includes(selectedBrand)) {
-                            card.style.display = "block";
-                        } else {
-                            card.style.display = "none";
-                        }
-                    });
+                    filterCars(searchQuery, selectedBrand);
                 });
             });

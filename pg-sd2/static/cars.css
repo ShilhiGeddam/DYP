@@ -85,3 +85,18 @@ a.btn:hover {
     font-size: 1rem;
     width: 250px;
 }
+
+.rating {
+    display: flex;
+    align-items: center;
+}
+
+.star {
+    font-size: 1.5rem; 
+    color: #ccc;
+    margin-right: 2px;
+}
+
+.star.filled {
+    color: #ffcc00;
+}
