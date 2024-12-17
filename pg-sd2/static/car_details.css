@@ -10,33 +10,35 @@ body {
     width: 80%;
     margin: 20px auto;
     background: #fff;
-    padding: 20px;
+    padding: 30px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
 h1 {
     font-size: 2rem;
     margin-bottom: 20px;
     text-align: center;
+    color: #333;
 }
 
 h2 {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     margin-top: 30px;
     margin-bottom: 10px;
     border-bottom: 2px solid #333;
     padding-bottom: 5px;
+    color: #333;
 }
 
 .car-image {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .car-image img {
     max-width: 100%;
-
     height: 500px;
     border-radius: 8px;
     border: 1px solid #ccc;
@@ -45,13 +47,13 @@ h2 {
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 th,
 td {
     text-align: left;
-    padding: 10px;
+    padding: 12px;
     border-bottom: 1px solid #ddd;
 }
 
@@ -59,8 +61,30 @@ th {
     width: 30%;
     background-color: #f4f4f4;
     font-weight: bold;
+    font-size: 1.1rem;
 }
 
 td {
     width: 70%;
+    font-size: 1rem;
+    color: #555;
+}
+
+td span {
+    font-weight: bold;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+}
+
+.star {
+    font-size: 1.5rem;
+    color: #ccc;
+    margin-right: 2px;
+}
+
+.star.filled {
+    color: #ffcc00;
 }

@@ -3,7 +3,7 @@ html
   head
     meta(charset="UTF-8")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
-    title #{car.model_name} Details
+    title= car.model_name + ' Details'
     link(rel="stylesheet" href="../car_details.css")
   body
     include navbar1
@@ -26,6 +26,15 @@ html
           tr
             th Assembly
             td= car.assembly_location
+          tr
+            th Car Type
+            td= car.type
+          tr
+            th Price
+            td= "£ " + car.price
+          tr
+            th Seater
+            td= car.seater
 
       // Body and Chassis Section
       .body-chassis
@@ -51,3 +60,18 @@ html
           tr
             th Transmission
             td= car.transmission
+
+      // Additional Details Section
+      .additional-details
+        h2 Additional Details
+        table
+          tr
+            th Description
+            td= car.description
+          tr
+            th Rating
+            td
+              .rating
+                // Loop to display stars based on rating
+                each num in [1, 2, 3, 4, 5]
+                  span.star(class=(num <= car.rating ? 'filled' : '')) &#9733;
