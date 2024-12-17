@@ -8,22 +8,41 @@ html
     body
         include navbar
 
-        // Search and Brand Filter Section
-        .search-container
-            input#searchBar(type="text" placeholder="Search cars by name or year...")
+        // Filter Section with Dropdowns
+        .filter-container
             select#brandFilter
                 option(value="") Select Brand
                 each brand in brands
                     option(value=brand) #{brand}
 
+            select#carTypeFilter
+                option(value="") Select Car Type
+                option(value="diesel") Diesel
+                option(value="petrol") Petrol
+                option(value="hybrid") Hybrid
+                option(value="electric") Electric
+
+            select#priceFilter
+                option(value="lowToHigh") Price: Low to High
+                option(value="highToLow") Price: High to Low
+
+            select#seaterFilter
+                option(value="") Select Seater
+                option(value="2") 2 Seater
+                option(value="4") 4 Seater
+                option(value="5") 5 Seater
+                option(value="7") 7 Seater
+
         h1 Featured Cars
         .car-container
             each car in cars
-                .car-card(data-brand=car.manufacturer)
+                .car-card(data-brand=car.manufacturer data-type=car.type data-price=car.price data-seater=car.seater)
                     a(href=`/cars/${car.car_id}`)
                         img(src=`./images/${car.image_location}` alt="Car Image")
                         h2 #{car.model_name}
                         p #{car.year}
+                        p £ #{car.price}
+                        p #{car.type}
                         // Rating Stars
                         .rating
                             each star in [1, 2, 3, 4, 5]
@@ -32,34 +51,60 @@ html
 
         script.
             document.addEventListener("DOMContentLoaded", () => {
-                const searchBar = document.getElementById("searchBar");
                 const brandFilter = document.getElementById("brandFilter");
-                const carCards = document.querySelectorAll(".car-card");
+                const carTypeFilter = document.getElementById("carTypeFilter");
+                const priceFilter = document.getElementById("priceFilter");
+                const seaterFilter = document.getElementById("seaterFilter");
+                const carContainer = document.querySelector(".car-container");
+                const carCards = Array.from(document.querySelectorAll(".car-card"));
 
-                const filterCars = (searchQuery, selectedBrand) => {
-                    carCards.forEach((card) => {
-                        const carName = card.querySelector("h2").textContent.toLowerCase();
-                        const carYear = card.querySelector("p").textContent.toLowerCase();
+                const filterCars = () => {
+                    const selectedBrand = brandFilter.value.toLowerCase();
+                    const selectedType = carTypeFilter.value.toLowerCase();
+                    const selectedPrice = priceFilter.value;
+                    const selectedSeater = seaterFilter.value;
+
+                    // Filter the cars based on selected criteria
+                    const filteredCars = carCards.filter((card) => {
                         const cardBrand = card.getAttribute("data-brand").toLowerCase();
+                        const cardType = card.getAttribute("data-type").toLowerCase();
+                        const cardPrice = parseFloat(card.getAttribute("data-price"));
+                        const cardSeater = card.getAttribute("data-seater");
 
-                        const isSearchMatch = searchQuery === "" || carName.includes(searchQuery) || carYear.includes(searchQuery);
                         const isBrandMatch = selectedBrand === "" || cardBrand.includes(selectedBrand);
+                        const isTypeMatch = selectedType === "" || cardType.includes(selectedType);
+                        const isSeaterMatch = selectedSeater === "" || cardSeater === selectedSeater;
 
-                        card.style.display = isSearchMatch && isBrandMatch ? "block" : "none";
+                        return isBrandMatch && isTypeMatch && isSeaterMatch;
+                    });
+
+                    // Sort filtered cars based on price selection
+                    if (selectedPrice === "lowToHigh") {
+                        filteredCars.sort((a, b) => parseFloat(a.getAttribute("data-price")) - parseFloat(b.getAttribute("data-price")));
+                    } else if (selectedPrice === "highToLow") {
+                        filteredCars.sort((a, b) => parseFloat(b.getAttribute("data-price")) - parseFloat(a.getAttribute("data-price")));
+                    }
+
+                    // Clear the container
+                    carContainer.innerHTML = '';
+
+                    // Append the sorted cars back to the container
+                    filteredCars.forEach((card) => {
+                        carContainer.appendChild(card);
                     });
                 };
 
-                // Filter by search query (car name or year)
-                searchBar.addEventListener("input", (event) => {
-                    const searchQuery = event.target.value.toLowerCase();
-                    const selectedBrand = brandFilter.value.toLowerCase();
-                    filterCars(searchQuery, selectedBrand);
-                });
+                // Event listeners for dropdown filters
+                brandFilter.addEventListener("change", filterCars);
+                carTypeFilter.addEventListener("change", filterCars);
+                priceFilter.addEventListener("change", filterCars);
+                seaterFilter.addEventListener("change", filterCars);
 
-                // Filter by selected brand
-                brandFilter.addEventListener("change", (event) => {
-                    const searchQuery = searchBar.value.toLowerCase();
-                    const selectedBrand = event.target.value.toLowerCase();
-                    filterCars(searchQuery, selectedBrand);
+                // Initial filtering
+                filterCars();
+
+                // Add event listener to window for resize event
+                window.addEventListener("resize", () => {
+                    filterCars();
                 });
             });
