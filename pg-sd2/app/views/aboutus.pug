@@ -1,0 +1,113 @@
+doctype html
+html
+  head
+    title About Us
+    link(rel='stylesheet', href='/styles.css')
+    style.
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+      }
+      header {
+        background: #007bff;
+        color: #fff;
+        padding: 20px 0;
+        text-align: center;
+      }
+      h1, h2 {
+        text-align: center;
+      }
+      .container {
+        width: 80%;
+        margin: auto;
+        overflow: hidden;
+        padding: 20px;
+      }
+      .mission, .contact {
+        background: #fff;
+        padding: 20px;
+        margin: 20px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      .team {
+        padding: 50px 20px;
+        color: #fff;
+        text-align: center;
+        background-image: url('./teammates.png');
+        background-size: cover;
+        background-position: center;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        position: relative;
+        min-height: 400px;
+      }
+      .team h2 {
+        margin-bottom: 20px;
+        color: #ffeb3b;
+        font-size: 2em;
+      }
+      .team-member {
+        position: absolute;
+        bottom: 10px;
+        font-size: 1.2em;
+        margin: 10px;
+      }
+      .team-member:nth-child(1) {
+        left: 10%;
+        color: #ff6f61;
+      }
+      .team-member:nth-child(2) {
+        left: 30%;
+        color: #6a1b9a;
+      }
+      .team-member:nth-child(3) {
+        right: 30%;
+        color: #1e88e5;
+      }
+      .team-member:nth-child(4) {
+        right: 10%;
+        color: #43a047;
+      }
+      footer {
+        text-align: center;
+        padding: 10px 0;
+        background: #007bff;
+        color: #fff;
+        position: relative;
+        bottom: 0;
+        width: 100%;
+      }
+  body
+    include navbar
+    .container
+      // Mission Section
+      .mission
+        h2 Our Mission
+        p Our mission is to provide the best car selection and customer service in the industry. We strive to connect our customers with their dream cars while ensuring a seamless and enjoyable experience.
+
+      // Team Section
+      .team
+        h2 Meet Our Team
+        .team-member
+          h3 Shilhi Geddam
+          p CEO & Founder
+        .team-member
+          h3 Revanth Mudavath
+          p Head of Sales
+        .team-member
+          h3 Sai Babu Bondada
+          p Customer Support Manager
+        .team-member
+          h3 Bala Sirisha Udatha
+          p Marketing Specialist
+
+      // Contact Section
+      .contact
+        h2 Contact Us
+        p If you have any questions or would like to learn more about our services, feel free to reach out to us through our contact page or email us at 
+          a(href="mailto:info@dyp.com") info@dyp.com.
+

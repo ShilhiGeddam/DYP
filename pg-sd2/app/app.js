@@ -22,6 +22,9 @@ app.get("/login", function(req, res) {
 app.get("/register", function(req, res) {
     res.render("register");
 });
+app.get("/about", function(req, res) {
+    res.render("aboutus");
+});
 // Create a route for testing the db
 app.get("/", function(req, res) {
     const brands = [
