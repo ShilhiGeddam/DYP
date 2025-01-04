@@ -6,10 +6,10 @@ html
     body
         include navbar
         h1 Login
-        form(action='/login', method='POST')
+        form(action='/authenticate', method='POST')
             div
-                label(for='username') Username:
-                input(type='text', name='username', id='username', required)
+                label(for='email') Email:
+                input(type='text', name='email', id='email', required)
             div
                 label(for='password') Password:
                 input(type='password', name='password', id='password', required)
