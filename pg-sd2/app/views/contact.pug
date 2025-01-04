@@ -9,8 +9,13 @@ html
     include navbar
     h1 Contact Us
 
+    // Conditional rendering for success and failure messages
+    if status
+      .message-container(class=status)
+        p= message
+
     .contact-form-container
-      form(action="/submit-contact-form" method="POST")
+      form(action="/contactus" method="POST")
         .form-row
           .form-group
             label(for="firstName") First Name:
@@ -36,4 +41,3 @@ html
 
         .form-group
           button(type="submit") Submit
-
