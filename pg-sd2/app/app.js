@@ -52,7 +52,7 @@ app.post('/authenticate', async (req, res) => {
 
         req.session.uid = uId;
         req.session.loggedIn = true;
-        res.redirect('/cars');
+        res.redirect('/');
     } catch (err) {
         console.error(`Error while authenticating user:`, err.message);
         res.status(500).send('Internal Server Error');
@@ -69,7 +69,7 @@ app.get('/logout', (req, res) => {
     }
 });
 
-app.get("/cars", (req, res) => {
+app.get("/", (req, res) => {
     const brands = [
         "Toyota", "Honda", "Ford", "BMW", "Mercedes-Benz", "Audi",
         "Chevrolet", "Nissan", "Hyundai", "Volkswagen", "Tesla",
@@ -161,6 +161,92 @@ app.get("/cars/:carId", (req, res) => {
             }
         });
 });
+
+app.get("/favourites", async (req, res) => {
+    try {
+        const userId = req.session.uid;
+        if (!userId) {
+            return res.status(401).send('User not logged in.');
+        }
+
+        const sql = 'SELECT p.* FROM favourites f JOIN car_details p ON f.product_id = p.car_id WHERE f.customer_id = ?';
+        const favourites = await db.query(sql, [userId]);
+
+        if (favourites.length > 0) {
+            res.render('favourites_list', { favourites });
+        } else {
+            res.render('favourites_list', { message: 'You have no favourite products yet.' });
+        }
+    } catch (err) {
+        console.error('Error retrieving favourites:', err.message);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+app.post("/favourites", async (req, res) => {
+    console.log(req.body);
+    const { product_id } = req.body;
+
+    if (!product_id) {
+        return res.status(400).send('Product ID is required.');
+    }
+
+    try {
+        const userId = req.session.uid;
+        if (!userId) {
+            return res.status(401).send('User not logged in.');
+        }
+
+        const sql = 'INSERT INTO favourites (customer_id, product_id) VALUES (?, ?)';
+        const values = [userId, product_id];
+
+        await db.query(sql, values);
+
+        res.redirect(`/cars/${product_id}`);
+    } catch (err) {
+        console.error('Error adding to favourites:', err.message);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+// Route to remove a product from favourites
+app.post("/remove-favourite", async (req, res) => {
+    try {
+        const userId = req.session.uid;
+        const { product_id } = req.body;
+
+        // Check if user is logged in
+        if (!userId) {
+            return res.status(401).send('User not logged in.');
+        }
+
+        // Validate product_id
+        if (!product_id) {
+            return res.status(400).send('Product ID is required.');
+        }
+
+        // Delete from favourites table
+        const sql = 'DELETE FROM favourites WHERE customer_id = ? AND product_id = ?';
+        const values = [userId, product_id];
+
+        const result = await db.query(sql, values);
+
+        // Check if the delete operation was successful
+        if (result.affectedRows > 0) {
+            // Redirect back to favourites page
+            res.redirect('/favourites');
+        } else {
+            res.status(404).send('Favourite not found.');
+        }
+    } catch (err) {
+        console.error('Error removing from favourites:', err.message);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+
+
+
 
 app.listen(3000, () => {
     console.log(`Server running at http://127.0.0.1:3000/`);

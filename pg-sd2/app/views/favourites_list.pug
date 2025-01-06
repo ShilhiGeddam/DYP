@@ -1,0 +1,35 @@
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Favourites
+    link(rel="stylesheet" href="../favourites.css")
+  body
+    include navbar1
+
+    .container
+      h1 Your Favourite Cars
+
+      // Check if there are any favorites
+      if favourites && favourites.length > 0
+        table
+          thead
+            tr
+              th Model Name
+              th Price
+              th Action
+          tbody
+            each fav in favourites
+              tr
+                td= fav.model_name
+                td= "£ " + fav.price
+                td
+                  a(href=`/cars/${fav.car_id}`) View Car
+                  form(action='/remove-favourite' method='POST')
+                    input(type='hidden' name='product_id' value=fav.car_id)
+                    button(type='submit') Remove from Favourites
+
+      else
+        p= message || 'You have no favourite products yet.'
+

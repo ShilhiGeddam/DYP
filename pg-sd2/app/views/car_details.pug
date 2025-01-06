@@ -13,6 +13,14 @@ html
       .car-image
         img(src=`../images/${car.image_location}` alt="Car Image")
 
+      // Add to Favorites Section
+      .add-to-favorites
+        form(action='/favourites' method='POST')
+          input(type='hidden' name='product_id' value=car.car_id)
+          button.favorite-btn(type='submit')
+            span.fav-icon &#9829;
+            | Add to Favorites
+
       // Overview Section
       .overview
         h2 Overview
