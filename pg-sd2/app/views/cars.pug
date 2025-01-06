@@ -46,8 +46,8 @@ html
                         // Rating Stars
                         .rating
                             each star in [1, 2, 3, 4, 5]
-                                span.star(class=car.rating >= star ? 'filled' : '') ★
-                        p Rating: #{car.rating} / 5
+                                span.star(class=car.avgRating >= star ? 'filled' : '') ★
+                        //- p Rating: #{car.avgRating} / 5
 
         script.
             document.addEventListener("DOMContentLoaded", () => {

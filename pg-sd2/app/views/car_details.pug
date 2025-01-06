@@ -80,6 +80,31 @@ html
             th Rating
             td
               .rating
-                // Loop to display stars based on rating
+                // Loop to display stars based on average rating
                 each num in [1, 2, 3, 4, 5]
-                  span.star(class=(num <= car.rating ? 'filled' : '')) &#9733;
+                  span.star(class=(num <= avgRating ? 'filled' : '')) &#9733;
+
+      // Write Review Section
+      .write-review
+        form(action='/submit-review' method='POST')
+          input(type='hidden' name='product_id' value=car.car_id)
+          textarea(name='review_text' placeholder="Write your review here..." required)
+          input(type='number' name='rating' min="1" max="5" placeholder="Rating (1-5)" required)
+          button(type='submit') Write Review
+
+      // Display Reviews Section
+      .reviews
+        h2 Customer Reviews
+        each review in reviews
+          .review
+            .review-header
+              .review-author
+                strong= review.customer_name
+              .review-rating
+                // Loop to display the rating as stars
+                each num in [1, 2, 3, 4, 5]
+                  span.star(class=(num <= review.rating ? 'filled' : '')) &#9733;
+            .review-text
+              p= review.review_text
+            .review-date
+              small= review.review_date

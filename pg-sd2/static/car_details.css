@@ -88,3 +88,100 @@ td span {
 .star.filled {
     color: #ffcc00;
 }
+/* Review Section Styling */
+.reviews {
+    margin-top: 40px;
+  }
+  
+  .review {
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .review-author {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .review-rating {
+    display: flex;
+    gap: 5px;
+  }
+  
+  .review-text {
+    margin: 10px 0;
+    font-size: 16px;
+  }
+  
+  .review-date {
+    text-align: right;
+    font-size: 14px;
+    color: #777;
+  }
+  
+  .review .star {
+    font-size: 18px;
+    color: #ccc;
+  }
+  
+  .review .star.filled {
+    color: #f39c12; /* Yellow for filled stars */
+  }
+  
+  /* Write a Review Section */
+  .write-review {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+  }
+  
+  .write-review h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .write-review textarea {
+    width: 100%;
+    height: 150px;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    resize: vertical;
+  }
+  
+  .write-review input[type='number'] {
+    width: 50px;
+    padding: 10px;
+    font-size: 16px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  .write-review button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .write-review button:hover {
+    background-color: #45a049;
+  }
+  

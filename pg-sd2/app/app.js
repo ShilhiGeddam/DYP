@@ -75,11 +75,26 @@ app.get("/", (req, res) => {
         "Chevrolet", "Nissan", "Hyundai", "Volkswagen", "Tesla",
         "Porsche", "Mazda", "Kia", "Subaru", "Jaguar"
     ];
-    const sql = 'SELECT * FROM car_details';
-    db.query(sql).then(results => {
-        res.render('cars', { cars: results, brands });
-    });
+    
+    // SQL query to get car details and the average rating for each car
+    const sql = `
+        SELECT car_details.*, 
+               IFNULL(AVG(reviews.rating), 0) AS avgRating 
+        FROM car_details
+        LEFT JOIN reviews ON car_details.car_id = reviews.product_id
+        GROUP BY car_details.car_id
+    `;
+
+    db.query(sql)
+        .then(results => {
+            res.render('cars', { cars: results, brands });
+        })
+        .catch(err => {
+            console.error(err);
+            res.status(500).send('Server Error');
+        });
 });
+
 
 app.get("/login", (req, res) => {
     try {
@@ -151,15 +166,36 @@ app.post('/contactus', async function (req, res) {
 
 app.get("/cars/:carId", (req, res) => {
     const { carId } = req.params;
-    const sql = 'SELECT * FROM car_details WHERE car_id = ?';
-    db.query(sql, [carId])
-        .then(results => {
-            if (results.length > 0) {
-                res.render('car_details', { car: results[0] });
-            } else {
-                res.status(404).send('Car not found');
-            }
-        });
+
+    // Query to get car details
+    const carSql = 'SELECT * FROM car_details WHERE car_id = ?';
+    // Query to get reviews for the car
+    const reviewsSql = 'SELECT * FROM reviews WHERE product_id = ? ORDER BY review_date DESC';  
+    // Query to calculate the average rating for the car
+    const avgRatingSql = 'SELECT AVG(rating) as avgRating FROM reviews WHERE product_id = ?';
+
+    // Query the car details, reviews, and average rating in parallel using Promise.all
+    Promise.all([
+        db.query(carSql, [carId]),
+        db.query(reviewsSql, [carId]),
+        db.query(avgRatingSql, [carId])
+    ])
+    .then(([carResults, reviewResults, avgRatingResults]) => {
+        if (carResults.length > 0) {
+            const car = carResults[0];
+            const reviews = reviewResults;
+            const avgRating = avgRatingResults[0].avgRating || 0;  // If no reviews, set avgRating to 0
+
+            // Pass the car, reviews, and average rating to the template
+            res.render('car_details', { car, reviews, avgRating });
+        } else {
+            res.status(404).send('Car not found');
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        res.status(500).send('Server Error');
+    });
 });
 
 app.get("/favourites", async (req, res) => {
@@ -243,6 +279,76 @@ app.post("/remove-favourite", async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
+app.post('/submit-review', async (req, res) => {
+    const { product_id, review_text, rating } = req.body;
+    console.log(req.body)
+    const userId = req.session.uid;
+
+    if (!userId) {
+        return res.status(401).send('User not logged in.');
+    }
+
+    if (!review_text || !rating || rating < 1 || rating > 5) {
+        return res.status(400).send('Invalid review or rating.');
+    }
+
+    try {
+        const sql = `
+            INSERT INTO reviews (product_id, customer_id, rating, review_text)
+            VALUES (?, ?, ?, ?)
+        `;
+        const values = [product_id, userId, rating, review_text];
+
+        const result = await db.query(sql, values);
+
+        if (result.affectedRows > 0) {
+            res.status(200).send('Review submitted successfully!');
+        } else {
+            res.status(500).send('Failed to submit the review.');
+        }
+    } catch (err) {
+        console.error('Error submitting review:', err.message);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+app.get('/compare', (req, res) => {
+    const selectedCarIds = [req.query.car1, req.query.car2];
+    
+    // Get all car models for dropdown
+    const sqlAllCars = 'SELECT car_id, model_name, image_location, manufacturer, year, price, transmission, seater FROM car_details';
+    
+    db.query(sqlAllCars)
+        .then(allCars => {
+            const selectedCars = allCars.filter(car => selectedCarIds.includes(String(car.car_id)));
+            
+            // Get the average ratings for the selected cars
+            const avgRatingSql = 'SELECT AVG(rating) as avgRating FROM reviews WHERE product_id = ?';
+            const ratingPromises = selectedCars.map(car => {
+                return db.query(avgRatingSql, [car.car_id])
+                    .then(ratingResults => {
+                        car.avgRating = ratingResults[0].avgRating || 0; // Set default rating if no reviews
+                        return car;
+                    });
+            });
+
+            Promise.all(ratingPromises)
+                .then(updatedCars => {
+                    // Render the compare page with the selected cars and all available cars
+                    res.render('compare', { cars: allCars, selectedCars: updatedCars });
+                })
+                .catch(err => {
+                    console.error('Error fetching ratings:', err);
+                    res.status(500).send('Error fetching ratings');
+                });
+        })
+        .catch(err => {
+            console.error('Error fetching car details:', err);
+            res.status(500).send('Error fetching car details');
+        });
+});
+
 
 
 

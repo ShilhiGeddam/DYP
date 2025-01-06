@@ -1,0 +1,61 @@
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Car Comparison
+    link(rel="stylesheet" href="../car_comparison.css")
+  body
+    include navbar1
+    .container
+      h1 Car Comparison
+
+      // Form to select two cars for comparison
+      form(action="/compare" method="GET")
+        label(for="car1") Select Car 1:
+        select(name="car1" id="car1")
+          each car in cars
+            option(value=car.car_id) #{car.model_name}
+        
+        label(for="car2") Select Car 2:
+        select(name="car2" id="car2")
+          each car in cars
+            option(value=car.car_id) #{car.model_name}
+        
+        button(type="submit") Compare
+
+      // Display cars side by side after selection
+      if selectedCars.length > 0
+        table
+          thead
+            tr
+              th Car
+              th Manufacturer
+              th Year
+              th Price
+              th Rating
+              th Transmission
+              th Seater
+          tbody
+            each car in selectedCars
+              tr
+                td
+                  .car-image
+                    img(src=`../images/${car.image_location}` alt="Car Image")
+                td= car.manufacturer
+                td= car.year
+                td= "£ " + car.price
+                td
+                  .rating
+                    each num in [1, 2, 3, 4, 5]
+                      span.star(class=(num <= car.avgRating ? 'filled' : '')) &#9733;
+                td= car.transmission
+                td= car.seater
+
+      // Message when no cars are selected
+      if selectedCars.length == 0
+        p Please select two cars to compare.
+
+      // Back to Car Selection Button
+      .back-to-selection
+        a(href="/") &larr; Back to car selection page
