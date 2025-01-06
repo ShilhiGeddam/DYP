@@ -9,10 +9,13 @@ html
     include navbar
     h1 Contact Us
 
-    // Conditional rendering for success and failure messages
-    if status
-      .message-container(class=status)
-        p= message
+    //- Conditional rendering for success and error messages
+    if success
+      .message-container.success
+        p= success
+    else if error
+      .message-container.error
+        p= error
 
     .contact-form-container
       form(action="/contactus" method="POST")
@@ -20,7 +23,7 @@ html
           .form-group
             label(for="firstName") First Name:
             input#firstName(type="text" name="firstName" required placeholder="Enter your first name")
-          
+
           .form-group
             label(for="lastName") Last Name:
             input#lastName(type="text" name="lastName" required placeholder="Enter your last name")
